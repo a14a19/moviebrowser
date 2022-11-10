@@ -2,15 +2,39 @@ import './App.css';
 import Navbar from './Components/navbar';
 import Home from './Components/home';
 import AboutView from './Components/about';
+import SearchView from './Components/search';
 import { Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 function App() {
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchText, setSearchTexts] = useState('');
+
+  useEffect(() => {
+    console.log(searchText, "this is searched");
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=037ce5b01644c77bdea3d4324fd003c5&language=en-US&query=${searchText}&page=1&include_adult=false`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setSearchResults(data.results)
+      })
+  }, [searchText])
+
   return (
     <div>
-      <Navbar />
+      <Navbar searchText={searchText} setSearchTexts={setSearchTexts}/>
       <Routes>
         <Route exact path='/' element={<Home />} />
-        <Route exact path='/about' element={<AboutView />}/>
+        <Route exact path='/about' element={<AboutView />} />
+        <Route
+          exact path='/search'
+          element={
+          <SearchView 
+            keyword={searchText}
+            searchResults={searchResults} 
+          />
+        }
+        />
       </Routes>
     </div>
   );
