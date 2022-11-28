@@ -1,17 +1,35 @@
-import { Link } from "react-router-dom";
 import Hero from "./hero";
 
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import MovieContext from "../Context/movieContext";
+
+
 const MovieCard = ({ movie }) => {
+    const movieIds = useContext(MovieContext)
+
     const posterUrl = `https://image.tmdb.org/t/p/original${movie.poster_path}`;
     const detailUrl = `/movie/${movie.id}`;
+    let rest = movieIds.wishlists
+
+    const clickedW = (i) => {
+        movieIds.setLiked(current => !current)
+        if (!movieIds.wishlists.includes(i)) {
+            movieIds.setWishlists([...rest, i])
+        } else {
+            let index = movieIds.wishlists.indexOf(i);
+            movieIds.wishlists.splice(index, 1);
+        }
+    }
+
     return (
-        <div className="col-lg-3 col-md-3 col-2 my-4">
-            <div className="card" /*style={{ width: '18rem' }}*/>
+        <div className="col col-xl-2 col-lg-2 col-md-3 col-sm-2 col-xs-2 my-4 px-1">
+            <div className="card position-relative" title={movie.title} >
                 <img src={posterUrl} className="card-img-top" alt={movie.original_title} />
+                <button className="position-absolute top-0 end-0 p-1 bg-light p-auto border-0 btn-outline-none" title='Add to wishlist' onClick={() => clickedW(movie.id)}>
+                    <i className={movieIds.wishlists.includes(movie.id) ? 'fa-solid fa-heart text-danger' : "fa-solid fa-heart"}></i>
+                </button>
                 <div className="card-body">
-                    <h5 className="card-title">{movie.original_title}</h5>
-                    {/* <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
-                    </p> */}
                     <Link to={detailUrl} className="btn btn-primary">Show details</Link>
                 </div>
             </div>
@@ -32,8 +50,8 @@ const SearchView = ({ keyword, searchResults }) => {
         <>
             <Hero text={title} />
             {results &&
-                <div className="container">
-                    <div className="row">
+                <div className="container-fluid">
+                    <div className="row flex-wrap mx-3">
                         {results}
                     </div>
                 </div>
