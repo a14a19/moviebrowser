@@ -50,7 +50,7 @@ const SearchView = ({ keyword, searchResults }) => {
         <>
             <Hero text={title} />
             {results &&
-                <div className="container-fluid">
+                <div className="container-fluid forheight">
                     <div className="row flex-wrap mx-3">
                         {results}
                     </div>
