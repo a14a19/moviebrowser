@@ -68,11 +68,11 @@ const Wishlist = () => {
         //         })
         // })
 
-        console.log(arr);
+        // console.log(arr);
     }, [wishMovie.wishlists])
 
     const result = wish.map((item, i) => {
-        console.log(item);
+        // console.log(item);
         return (
             <div key={i} className='col-lg-3 col-md-3 col-2 col-xs-6 my-4 align-self-center position-relative'>
                 <Link to={detailUrl + item.id} className="card" style={{ width: '10rem' }}>
